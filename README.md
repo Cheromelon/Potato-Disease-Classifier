@@ -31,10 +31,7 @@ The application allows users to upload a potato leaf image through a web interfa
 - [Installation](#installation)
 - [Running the Project](#running-the-project)
 - [API Documentation](#api-documentation)
-- [Future Improvements](#future-improvements)
-- [Limitations](#limitations)
-- [Acknowledgements](#acknowledgements)
-- [Author](#author)
+
 
 ---
 
