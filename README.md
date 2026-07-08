@@ -400,3 +400,342 @@ Example workflow:
 2. Preview image.
 3. Click **Predict**.
 4. Receive predicted disease and confidence score.
+
+# Installation
+
+## Clone the Repository
+
+```bash
+git clone https://github.com/<your-github-username>/potato-disease-classification.git
+```
+
+Navigate into the project directory.
+
+```bash
+cd potato-disease-classification
+```
+
+---
+
+# Create a Virtual Environment (Recommended)
+
+### Windows
+
+```bash
+python -m venv venv
+
+venv\Scripts\activate
+```
+
+### Linux / macOS
+
+```bash
+python3 -m venv venv
+
+source venv/bin/activate
+```
+
+---
+
+# Install Dependencies
+
+Install all required Python packages.
+
+```bash
+pip install -r backend/requirements.txt
+```
+
+If a `requirements.txt` file is not available, install the required libraries manually.
+
+```bash
+pip install tensorflow
+pip install fastapi
+pip install uvicorn
+pip install numpy
+pip install pillow
+pip install python-multipart
+```
+
+---
+
+# Running the Backend
+
+Navigate to the project root.
+
+```bash
+cd potato-disease-classification
+```
+
+Start the FastAPI server.
+
+```bash
+uvicorn backend.main:app --reload
+```
+
+If the server starts successfully, you should see:
+
+```text
+INFO:     Uvicorn running on http://127.0.0.1:8000
+```
+
+The backend will now be available at
+
+```
+http://127.0.0.1:8000
+```
+
+---
+
+# API Documentation
+
+FastAPI automatically generates interactive API documentation.
+
+Swagger UI:
+
+```
+http://127.0.0.1:8000/docs
+```
+
+ReDoc:
+
+```
+http://127.0.0.1:8000/redoc
+```
+
+Both interfaces allow users to test the API directly from the browser.
+
+---
+
+# Running the Frontend
+
+The frontend is a static web application.
+
+Open the **frontend** directory in Visual Studio Code.
+
+Run **Live Server**.
+
+The application will open in your browser, usually at:
+
+```
+http://127.0.0.1:5500
+```
+
+The frontend communicates with the FastAPI backend through HTTP requests.
+
+---
+
+# Backend Endpoints
+
+## Health Check
+
+**GET**
+
+```
+/ping
+```
+
+Response
+
+```json
+"hello,there"
+```
+
+---
+
+## Disease Prediction
+
+**POST**
+
+```
+/predict
+```
+
+Request Type
+
+```
+multipart/form-data
+```
+
+Request Body
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| file | Image | Potato Leaf Image |
+
+Example Response
+
+```json
+{
+    "class": "Late Blight",
+    "confidence": 99.42
+}
+```
+
+---
+
+# API Workflow
+
+```text
+Frontend
+     │
+     ▼
+Upload Image
+     │
+     ▼
+FastAPI Backend
+     │
+     ▼
+Image Preprocessing
+     │
+     ▼
+TensorFlow Model
+     │
+     ▼
+Prediction
+     │
+     ▼
+JSON Response
+     │
+     ▼
+Frontend Displays Result
+```
+
+---
+
+# Frontend Overview
+
+The frontend was intentionally kept lightweight to demonstrate complete frontend-backend integration.
+
+### Components
+
+- HTML
+- CSS
+- JavaScript
+
+### Features
+
+- Image Upload
+- Image Preview
+- Prediction Button
+- Disease Prediction
+- Confidence Score
+- Error Handling
+
+---
+
+# Backend Overview
+
+The backend is implemented using **FastAPI**.
+
+Responsibilities include:
+
+- Receiving uploaded images
+- Reading images using Pillow
+- Converting images to NumPy arrays
+- Passing images through the trained TensorFlow model
+- Returning predictions as JSON
+
+The trained model is loaded only once during application startup, ensuring low inference latency.
+
+---
+
+# Model Inference Pipeline
+
+```text
+User Uploads Image
+          │
+          ▼
+Read using Pillow
+          │
+          ▼
+Convert to NumPy Array
+          │
+          ▼
+Expand Batch Dimension
+          │
+          ▼
+Model.predict()
+          │
+          ▼
+Softmax Probabilities
+          │
+          ▼
+Argmax
+          │
+          ▼
+Disease Class
+          │
+          ▼
+Confidence Score
+```
+
+---
+
+# Deployment
+
+The project is designed with deployment in mind.
+
+The architecture separates the frontend and backend, allowing them to be deployed independently.
+
+### Local Development
+
+```
+Frontend  → Live Server
+Backend   → FastAPI
+Model     → TensorFlow
+```
+
+### Production Deployment
+
+```
+Frontend
+    │
+    ▼
+Vercel / Static Hosting
+
+        │
+        ▼
+
+FastAPI Backend
+
+        │
+        ▼
+
+Docker Container
+
+        │
+        ▼
+
+AWS EC2
+```
+
+This architecture allows the frontend and backend to scale independently.
+
+---
+
+# Repository Contents
+
+| Folder | Description |
+|---------|-------------|
+| backend | FastAPI application |
+| frontend | Web interface |
+| models | Trained CNN model |
+| training | Model development notebook |
+| README.md | Project documentation |
+
+---
+
+# Requirements
+
+The project was developed using the following software versions.
+
+| Software | Version |
+|----------|---------|
+| Python | 3.11 |
+| TensorFlow | 2.x |
+| FastAPI | Latest |
+| Uvicorn | Latest |
+| NumPy | Latest |
+| Pillow | Latest |
+
+Newer versions should also work with minimal or no modification.
