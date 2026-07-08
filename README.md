@@ -1,71 +1,100 @@
- Potato Disease Classification using Deep Learning
+# Potato Disease Classification using Deep Learning
 
-An end-to-end Deep Learning web application that classifies potato leaf diseases using TensorFlow, FastAPI, and a simple HTML/CSS/JavaScript frontend.
+[![Python](https://img.shields.io/badge/Python-3.11-blue.svg)](https://www.python.org/)
+[![TensorFlow](https://img.shields.io/badge/TensorFlow-2.x-FF6F00.svg)](https://www.tensorflow.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg)](https://fastapi.tiangolo.com/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-Live Demo: (Add after deployment)
+An end-to-end deep learning web application for classifying potato leaf diseases using Convolutional Neural Networks (CNNs). The project provides a complete machine learning pipeline—from model training to deployment through a FastAPI backend and an interactive web interface.
 
-Project Demo: (Add GIF/video here)
+The model classifies potato leaf images into one of the following categories:
 
- Overview
+- Healthy
+- Early Blight
+- Late Blight
 
-Potato crops are vulnerable to diseases such as Early Blight and Late Blight, which can significantly reduce crop yield if not detected early.
+The application allows users to upload a potato leaf image through a web interface and receive the predicted disease along with the model's confidence score in real time.
 
-This project uses a Convolutional Neural Network (CNN) trained on the PlantVillage dataset to classify potato leaf images into three categories:
+---
 
- Healthy
- Early Blight
- Late Blight
+# Table of Contents
 
-The trained model is exposed through a FastAPI REST API, allowing users to upload an image through a web interface and receive predictions in real time.
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Technology Stack](#technology-stack)
+- [Project Structure](#project-structure)
+- [Dataset](#dataset)
+- [Model Training Pipeline](#model-training-pipeline)
+- [Model Architecture](#model-architecture)
+- [Performance](#performance)
+- [Application Workflow](#application-workflow)
+- [Screenshots](#screenshots)
+- [Installation](#installation)
+- [Running the Project](#running-the-project)
+- [API Documentation](#api-documentation)
+- [Future Improvements](#future-improvements)
+- [Limitations](#limitations)
+- [Acknowledgements](#acknowledgements)
+- [Author](#author)
 
- Features
-Image classification using TensorFlow/Keras
-FastAPI backend for inference
-Responsive frontend built with HTML, CSS and JavaScript
-Upload and preview leaf images
-Displays predicted disease and confidence score
-REST API for easy integration
-Ready for Docker/AWS deployment
-📷 Screenshots
+---
 
-(Insert screenshots here)
+# Project Overview
 
-Home Page
+Potato is one of the world's most important food crops. Diseases such as **Early Blight** and **Late Blight** can significantly reduce crop yield if they are not detected at an early stage.
 
-(Insert image)
+This project aims to automate disease identification using Deep Learning. A Convolutional Neural Network was trained on the PlantVillage dataset to classify potato leaf diseases. The trained model is then deployed behind a FastAPI REST API and connected to a lightweight frontend built using HTML, CSS, and JavaScript.
 
-Prediction Example
+The project demonstrates the complete machine learning workflow including:
 
-(Insert image)
+- Dataset preprocessing
+- Model development
+- Training and evaluation
+- Saving trained models
+- Backend API development
+- Frontend integration
+- Model inference
+- Deployment-ready project structure
 
- Demo
+---
 
-(Insert GIF or video)
+# Features
 
-🛠 Tech Stack
-Machine Learning
-TensorFlow
-Keras
-NumPy
-Pillow
-Backend
-FastAPI
-Uvicorn
-Frontend
-HTML5
-CSS3
-JavaScript
-Tools
-Git
-GitHub
-Jupyter Notebook
-VS Code
-📂 Project Structure
+- Deep Learning based potato leaf disease classification
+- Image upload and preview
+- FastAPI REST API for prediction
+- TensorFlow/Keras inference
+- Confidence score for every prediction
+- Simple and responsive frontend
+- Clean project structure
+- Deployment-ready backend
+- Easily extendable to additional plant diseases
+
+---
+
+# Technology Stack
+
+| Category | Technologies |
+|-----------|--------------|
+| Programming Language | Python |
+| Deep Learning | TensorFlow, Keras |
+| Image Processing | NumPy, Pillow |
+| Backend | FastAPI, Uvicorn |
+| Frontend | HTML, CSS, JavaScript |
+| Version Control | Git, GitHub |
+| Development | Jupyter Notebook, VS Code |
+
+---
+
+# Project Structure
+
+```text
 potato-disease-classification/
 │
 ├── backend/
 │   ├── main.py
-│   └── requirements.txt
+│   ├── requirements.txt
+│   └── __pycache__/
 │
 ├── frontend/
 │   ├── index.html
@@ -76,136 +105,59 @@ potato-disease-classification/
 │   └── 1.keras
 │
 ├── training/
-│   └── training.ipynb
+│   ├── training.ipynb
+│   └── PlantVillage/
 │
 ├── README.md
 └── .gitignore
-🧠 Model Pipeline
-Leaf Image
-      │
-      ▼
-Resize
-      │
-      ▼
-Rescaling
-      │
-      ▼
-CNN
-      │
-      ▼
-Softmax
-      │
-      ▼
-Healthy
-Early Blight
-Late Blight
-📊 Dataset
+```
 
-The model was trained using the PlantVillage dataset.
+---
 
-Classes:
+# Dataset
 
-Healthy
-Early Blight
-Late Blight
+The model was trained using the **PlantVillage** dataset.
 
-The dataset consists of labeled potato leaf images captured under controlled conditions.
+The dataset contains labeled potato leaf images belonging to three categories:
 
-⚙️ Model Training
+| Class | Description |
+|--------|-------------|
+| Healthy | Healthy potato leaf |
+| Early Blight | Potato leaf infected with Early Blight |
+| Late Blight | Potato leaf infected with Late Blight |
 
-Training workflow:
+The PlantVillage dataset provides images captured under controlled conditions with clean backgrounds, making it well suited for supervised image classification tasks.
 
-Data loading using TensorFlow
-Data preprocessing
-Image resizing
-Image normalization
-Data augmentation
-CNN training
-Model evaluation
-Model export as .keras
+The dataset directory is excluded from this repository using `.gitignore` because of its large size.
 
-Training notebook:
+---
 
-training/training.ipynb
-📈 Model Performance
-Test Accuracy
-≈98%
+# Dataset Preprocessing
 
-The model performs well on the PlantVillage test set and correctly classifies most unseen images from the same distribution.
+Before training, the dataset undergoes several preprocessing steps.
 
- Real-world Testing
+- Images resized to **256 × 256**
+- Pixel normalization using `Rescaling(1/255)`
+- Data augmentation
+    - Random horizontal flip
+    - Random vertical flip
+    - Random rotation
+- Dataset caching
+- Prefetching for faster training
+- Train, Validation and Test split
 
-The model was additionally tested on images collected from Google.
+These preprocessing steps improve training efficiency while helping the model generalize better on unseen images.
 
-Observations:
+---
 
-Performs well on clear images of individual potato leaves.
-Performance decreases on images containing multiple overlapping leaves or cluttered backgrounds.
-This behavior is expected because the training dataset primarily contains single-leaf images captured under controlled conditions.
- Running the Project
-Clone
-git clone https://github.com/<username>/potato-disease-classification.git
+# Data Augmentation
 
-cd potato-disease-classification
-Install dependencies
-pip install -r backend/requirements.txt
-Start Backend
-uvicorn backend.main:app --reload
+The following augmentation techniques were used during training:
 
-Backend:
+- Random Horizontal Flip
+- Random Vertical Flip
+- Random Rotation
 
-http://127.0.0.1:8000
+Data augmentation helps reduce overfitting by exposing the model to multiple transformed versions of the same image.
 
-Swagger API:
-
-http://127.0.0.1:8000/docs
-Start Frontend
-
-Open
-
-frontend/index.html
-
-using Live Server.
-
- API
-POST /predict
-
-Uploads a potato leaf image and returns the predicted disease.
-
-Request:
-
-multipart/form-data
-
-Response:
-
-{
-  "class": "Late Blight",
-  "confidence": 99.42
-}
-⚠️ Limitations
-Trained primarily on the PlantVillage dataset.
-Best results are obtained with a single potato leaf in the image.
-Performance may decrease on field images containing multiple leaves, complex backgrounds, or varying lighting conditions.
-This project is intended for educational and research purposes and should not replace expert agricultural diagnosis.
-🔮 Future Improvements
-Fine-tune using real field images
-Improve robustness with advanced data augmentation
-Deploy backend using Docker
-Deploy application on AWS
-Add Grad-CAM visualization to explain model predictions
-Support mobile-friendly interface
-Extend to additional crop diseases
- What I Learned
-
-Through this project, I gained practical experience with:
-
-Convolutional Neural Networks
-TensorFlow/Keras
-Transfer Learning concepts
-Image preprocessing
-FastAPI
-REST API development
-Frontend–Backend integration
-Model serialization and inference
-Git & GitHub workflow
-End-to-end Machine Learning deployment pipeline
+---
