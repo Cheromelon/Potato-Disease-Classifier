@@ -3,8 +3,6 @@
 [![Python](https://img.shields.io/badge/Python-3.11-blue.svg)](https://www.python.org/)
 [![TensorFlow](https://img.shields.io/badge/TensorFlow-2.x-FF6F00.svg)](https://www.tensorflow.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg)](https://fastapi.tiangolo.com/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-
 An end-to-end deep learning web application for classifying potato leaf diseases using Convolutional Neural Networks (CNNs). The project provides a complete machine learning pipeline—from model training to deployment through a FastAPI backend and an interactive web interface.
 
 The model classifies potato leaf images into one of the following categories:
