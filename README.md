@@ -160,3 +160,243 @@ The following augmentation techniques were used during training:
 Data augmentation helps reduce overfitting by exposing the model to multiple transformed versions of the same image.
 
 ---
+# Model Architecture
+
+Two different approaches were explored during the development of this project:
+
+1. A custom Convolutional Neural Network (CNN)
+2. Transfer Learning using ResNet50
+
+Although both models were trained and evaluated, the custom CNN model was selected for deployment due to its lightweight architecture, good performance, and faster inference.
+
+The deployed model is stored in:
+
+```text
+models/1.keras
+```
+
+---
+
+# Custom CNN Architecture
+
+The deployed CNN consists of the following layers:
+
+| Layer | Output |
+|--------|---------|
+| Input Image | 256 × 256 × 3 |
+| Resizing | 256 × 256 |
+| Rescaling | Pixel values normalized to [0,1] |
+| Data Augmentation | Random Flip & Rotation |
+| Conv2D (32 filters) + ReLU | Feature Extraction |
+| MaxPooling2D | Downsampling |
+| Conv2D (64 filters) + ReLU | Feature Extraction |
+| MaxPooling2D | Downsampling |
+| Conv2D (64 filters) + ReLU | Feature Extraction |
+| MaxPooling2D | Downsampling |
+| Flatten | Converts feature maps into a vector |
+| Dense (64) + ReLU | Fully Connected Layer |
+| Dense (3) + Softmax | Disease Classification |
+
+The model predicts one of the following classes:
+
+- Healthy
+- Early Blight
+- Late Blight
+
+---
+
+# Training Configuration
+
+| Parameter | Value |
+|-----------|-------|
+| Framework | TensorFlow / Keras |
+| Image Size | 256 × 256 |
+| Batch Size | 32 |
+| Loss Function | Sparse Categorical Crossentropy |
+| Optimizer | Adam |
+| Output Activation | Softmax |
+| Epochs | 50 |
+| Number of Classes | 3 |
+
+---
+
+# Training Pipeline
+
+The complete training workflow is shown below.
+
+```text
+PlantVillage Dataset
+          │
+          ▼
+Load Dataset
+          │
+          ▼
+Train / Validation / Test Split
+          │
+          ▼
+Resize Images
+          │
+          ▼
+Rescale Pixel Values
+          │
+          ▼
+Data Augmentation
+          │
+          ▼
+CNN Training
+          │
+          ▼
+Model Evaluation
+          │
+          ▼
+Save Trained Model (.keras)
+          │
+          ▼
+FastAPI Inference API
+          │
+          ▼
+Frontend Prediction
+```
+
+---
+
+# Model Performance
+
+The trained model achieved excellent performance on the PlantVillage test dataset.
+
+| Metric | Value |
+|--------|--------|
+| Test Accuracy | ~98% |
+| Number of Classes | 3 |
+| Model Format | Keras (.keras) |
+
+The model successfully classifies healthy potato leaves along with Early Blight and Late Blight under controlled conditions.
+
+---
+
+# Prediction Pipeline
+
+Once the backend receives an uploaded image, the following operations are performed.
+
+```text
+Uploaded Image
+        │
+        ▼
+Read Image using Pillow
+        │
+        ▼
+Convert to NumPy Array
+        │
+        ▼
+Expand Batch Dimension
+        │
+        ▼
+CNN Prediction
+        │
+        ▼
+Softmax Probabilities
+        │
+        ▼
+Predicted Class
+        │
+        ▼
+Confidence Score
+        │
+        ▼
+JSON Response
+```
+
+Example response:
+
+```json
+{
+    "class": "Late Blight",
+    "confidence": 99.42
+}
+```
+
+---
+
+# Evaluation on Real-World Images
+
+Although the model achieves approximately **98% accuracy** on the PlantVillage test dataset, additional testing was performed using real-world potato leaf images collected from Google.
+
+The following observations were made:
+
+- The model performs reliably on images containing a single potato leaf.
+- Performance decreases when multiple overlapping leaves are present.
+- Complex backgrounds such as soil, vegetation, or shadows can affect predictions.
+- Cropping a single infected leaf from a complex image significantly improves prediction accuracy.
+
+These observations highlight the difference between controlled datasets and real-world agricultural environments.
+
+---
+
+# Current Limitations
+
+The model was trained exclusively on the PlantVillage dataset.
+
+PlantVillage images generally contain:
+
+- Single leaf
+- Plain background
+- Controlled lighting
+- Minimal noise
+
+Real-world field images often contain:
+
+- Multiple leaves
+- Different camera angles
+- Natural lighting
+- Soil background
+- Occlusions
+- Shadows
+
+Consequently, prediction accuracy may decrease for images captured in natural farming environments.
+
+For best results, users are encouraged to upload a clear image containing a single potato leaf.
+
+---
+
+# Sample Predictions
+
+The following section can be updated with screenshots after deployment.
+
+| Input Image | Prediction | Confidence |
+|-------------|------------|------------|
+| *(Insert Image)* | Healthy | 99.83% |
+| *(Insert Image)* | Early Blight | 98.47% |
+| *(Insert Image)* | Late Blight | 99.12% |
+
+---
+
+# Screenshots
+
+## Home Page
+
+> Insert screenshot of the application's home page here.
+
+---
+
+## Prediction Page
+
+> Insert screenshot showing image upload and prediction.
+
+---
+
+## API Documentation
+
+> Insert screenshot of FastAPI Swagger documentation.
+
+---
+
+# Demonstration
+
+A short demonstration video or GIF illustrating the application workflow can be added here.
+
+Example workflow:
+
+1. Upload potato leaf image.
+2. Preview image.
+3. Click **Predict**.
+4. Receive predicted disease and confidence score.
